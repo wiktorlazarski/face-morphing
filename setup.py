@@ -9,18 +9,18 @@ install_requires = [line.strip() for line in open("requirements.txt").readlines(
 with open("README.md", "r", encoding="UTF-8") as fh:
     long_description = fh.read()
 
-__version__ = runpy.run_path("ai_awesome/_version.py")["__version__"]
+__version__ = runpy.run_path("face_morphing/_version.py")["__version__"]
 
 # Setup package
 setuptools.setup(
-    name="Replace with project name",
+    name="face_morphing",
     version=__version__,
-    author="Replace with your name",
-    author_email="Replace with your email",
-    description="Give short description of your project.",
+    author="Wiktor Łazarski, Michał Szaknis, Aneta Jaśkiewicz",
+    author_email="wjlazarski@gmail.com",
+    description="Automatic human face morphing.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your_project_link",
+    url="https://github.com/wiktorlazarski/face-morphing",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
