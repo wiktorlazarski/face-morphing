@@ -2,8 +2,10 @@ black
 flake8
 isort
 jupyterlab
+loguru
 matplotlib
 numpy
+opencv-python
 pandas
 pre-commit
 pytest
