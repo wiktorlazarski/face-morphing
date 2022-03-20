@@ -11,23 +11,38 @@ class Morphing(abc.ABC):
 
     @abc.abstractmethod
     def generate_morph_sequence(
+        self, from_img: np.ndarray, to_img: np.ndarray, *args: t.Any
+    ) -> t.List[np.ndarray]:
+        pass
+
+    @abc.abstractmethod
+    def looped_morphing(
         self, from_img: np.ndarray, to_img: np.ndarray
     ) -> t.List[np.ndarray]:
         pass
 
-    def looped_morphing(
-        self, from_img: np.ndarray, to_img: np.ndarray
-    ) -> t.List[np.ndarray]:
-        from_to_morphs = self.generate_morph_sequence(from_img, to_img)
-        to_from_morphs = self.generate_morph_sequence(to_img, from_img)
-
-        return [*from_to_morphs, *to_from_morphs]
-
     def _resize_second_image(
-        self, second_img: np.ndarray, first_image_res: t.Tuple[int, int]
+        self,
+        second_img: np.ndarray,
+        first_image_res: t.Tuple[int, int],
+        second_kps: t.Optional[t.List[t.Tuple[float]]] = None,
     ) -> np.ndarray:
         resized_img = cv2.resize(second_img, first_image_res)
-        return resized_img
+
+        resized_kps = []
+        if second_kps is not None:
+            s_h, s_w = second_img.shape[:2]
+            f_w, f_h = first_image_res
+
+            sx, sy = f_w / s_w, f_h / s_h
+
+            for kp in second_kps:
+                x, y = kp
+                new_x = x * sx
+                new_y = y * sy
+                resized_kps.append((round(new_x, 2), round(new_y, 2)))
+
+        return resized_img, resized_kps
 
     def _compute_morph(
         self, from_img: np.ndarray, to_img: np.ndarray, alpha: float
