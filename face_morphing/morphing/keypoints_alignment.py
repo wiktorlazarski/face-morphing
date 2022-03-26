@@ -110,7 +110,7 @@ class KeypointsAlignmentMorphing(alg.Morphing):
 if __name__ == "__main__":
     import os
 
-    a = KeypointsAlignmentMorphing(50)
+    a = KeypointsAlignmentMorphing(100)
 
     F_SAMPLE_ANN = os.path.join("data", "morph_samples", "1.txt")
     F_SAMPLE_IMG = os.path.join("data", "morph_samples", "1.jpg")
