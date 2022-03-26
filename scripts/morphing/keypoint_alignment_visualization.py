@@ -14,8 +14,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("-n", "--num_morphs", type=int, default=300, help="A number of morph generated in a sequence.")
     parser.add_argument("-l", "--looped", action="store_true", help="Visualize morphing in a loop.")
     parser.add_argument("-cw", "--combined_warped", action="store_true", help="Visualize morphing in a loop.")
-
     # fmt: on
+
     return parser.parse_args()
 
 
