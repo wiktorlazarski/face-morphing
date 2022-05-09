@@ -1,0 +1,28 @@
+hydra:
+  run:
+    dir: 'train_experiment/${now:%Y-%m-%d}/${now:%H-%M}'
+  output_subdir: 'yamls'
+
+dataset_module:
+  batch_size: 6
+  num_workers: 6
+  dataset_root: "dataset"
+  use_all_augmentations: true
+  resize_augmentation_keys: null
+  augmentation_keys: null
+  nn_input_image_resolution: 512
+
+train_module:
+  lr: 0.0001
+  base_model: 'resnet50'
+  number_of_cordinates: 386
+
+training:
+  wandb_project: "face-morphing"
+  wandb_name: "test-run"
+  with_gpu: true
+  max_epochs: 10
+  early_stop:
+    monitor: "val_loss"
+    patience: 5
+    mode: "min"

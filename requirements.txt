@@ -12,3 +12,8 @@ pytest
 seaborn
 torch
 torchvision
+hydra-core
+pytorch_lightning
+timm
+albumentations
+wandb

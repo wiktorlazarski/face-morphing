@@ -42,7 +42,7 @@ class HelenFaceMorphingDataset(torchvision.datasets.VisionDataset):
                 image=image, keypoints=keypoints
             )
 
-        return image, keypoints
+        return image, torch.tensor(keypoints).float()
 
     def _load_images(self) -> t.List[str]:
         images_dir = Path(self.root) / "images"
