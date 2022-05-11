@@ -31,7 +31,7 @@ class PreprocessingPipeline:
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
         return self.preprocess_image_keypoints(image, keypoints)
 
-    def preprocess_image_keypoints(
+    def preprocess_sample(
         self, image: np.ndarray, keypoints: torch.Tensor
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
         resized_image = self.image_preprocessing_pipeline(Image.fromarray(image))
@@ -43,4 +43,4 @@ class PreprocessingPipeline:
             keypoints[iter][0] = keypoints[iter][0] * resized_size_x
             keypoints[iter][1] = keypoints[iter][1] * resized_size_y
 
-        return resized_image, keypoints
+        return resized_image, torch.tensor(keypoints).float()

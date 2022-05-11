@@ -38,7 +38,7 @@ class HelenFaceMorphingDataset(torchvision.datasets.VisionDataset):
             )
 
         if self.preprocess_pipeline is not None:
-            image, keypoints = self.preprocess_pipeline.preprocess_image_keypoints(
+            image, keypoints = self.preprocess_pipeline.preprocess_sample(
                 image=image, keypoints=keypoints
             )
 
