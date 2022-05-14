@@ -4,25 +4,25 @@ hydra:
   output_subdir: 'yamls'
 
 dataset_module:
-  batch_size: 6
-  num_workers: 6
-  dataset_root: "dataset"
-  use_all_augmentations: true
+  batch_size: 128
+  num_workers: 12
+  dataset_root: "mock_dataset"
+  use_all_augmentations: false
   resize_augmentation_keys: null
   augmentation_keys: null
-  nn_input_image_resolution: 512
+  nn_input_image_resolution: 64
 
 train_module:
-  lr: 0.0001
+  lr: 0.001
   base_model: 'resnet50'
   number_of_cordinates: 386
 
 training:
   wandb_project: "face-morphing"
-  wandb_name: "test-run"
+  wandb_name: "sanity-check"
   with_gpu: true
-  max_epochs: 10
+  max_epochs: 50
   early_stop:
     monitor: "val_loss"
-    patience: 5
+    patience: 100000
     mode: "min"

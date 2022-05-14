@@ -17,5 +17,21 @@ class KeyPointsModel(nn.Module):
         self.model.fc = nn.Linear(in_features=in_channels, out_features=number_of_cordinates, bias=True)
 
     def forward(self, batch: torch.Tensor) -> torch.Tensor:
-        return torch.reshape(self.model(batch), (batch.shape[0], self.number_of_points, 2))
+        return torch.reshape(F.sigmoid(self.model(batch)), (batch.shape[0], self.number_of_points, 2))
 
+    @staticmethod
+    def load_from_checkpoint(ckpt_path: str) -> KeyPointsModel:
+        ckpt = torch.load(ckpt_path, map_location=torch.device("cpu"))
+
+        hparams = ckpt["hyper_parameters"]
+        neural_net = KeyPointsModel(
+            number_of_cordinates=hparams['number_of_cordinates'],
+            base_model=hparams['base_model'],
+        )
+
+        weigths = {
+            k.replace("model.", "", 1): v for k, v in ckpt["state_dict"].items()
+        }
+        neural_net.load_state_dict(weigths, strict=True)
+
+        return neural_net

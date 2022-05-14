@@ -70,13 +70,14 @@ class DataModule(pl.LightningDataModule):
             batch_size=self.batch_size,
             num_workers=self.num_workers,
             shuffle=True,
-            drop_last=True,
+            drop_last=False,
             pin_memory=True,
         )
 
+
     def val_dataloader(self) -> DataLoader:
         return DataLoader(
-            self.validation_dataset,
+            self.train_dataset,
             batch_size=self.batch_size,
             num_workers=self.num_workers,
             shuffle=False,
@@ -86,7 +87,7 @@ class DataModule(pl.LightningDataModule):
 
     def test_dataloader(self) -> DataLoader:
         return DataLoader(
-            self.test_dataset,
+            self.train_dataset,
             batch_size=self.batch_size,
             num_workers=self.num_workers,
             shuffle=False,
@@ -155,7 +156,8 @@ class TrainingModule(pl.LightningModule):
     ):
         images, points = batch
         predicted_points = self.model(images)
-        loss = F.mse_loss(predicted_points, points)
+
+        loss = F.mse_loss(points, predicted_points) * 1000
 
         mse_metric(predicted_points, points)
 

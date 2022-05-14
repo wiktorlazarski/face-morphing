@@ -4,7 +4,8 @@ import numpy as np
 import torch
 from PIL import Image
 from torchvision import transforms
-
+import cv2
+import os
 
 class PreprocessingPipeline:
 
@@ -26,6 +27,7 @@ class PreprocessingPipeline:
             ]
         )
 
+
     def __call__(
         self, image: np.ndarray, keypoints: torch.Tensor
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
@@ -35,12 +37,18 @@ class PreprocessingPipeline:
         self, image: np.ndarray, keypoints: torch.Tensor
     ) -> t.Tuple[torch.Tensor, torch.Tensor]:
         resized_image = self.image_preprocessing_pipeline(Image.fromarray(image))
-        resized_size_x = image.shape[0] / self.nn_image_input_resolution
-        resized_size_y = image.shape[1] / self.nn_image_input_resolution
 
-        for iter in range(1, int(len(keypoints))):
+        for iter in range(int(len(keypoints))):
             keypoints[iter] = list(keypoints[iter])
-            keypoints[iter][0] = keypoints[iter][0] * resized_size_x
-            keypoints[iter][1] = keypoints[iter][1] * resized_size_y
+            keypoints[iter][0] = keypoints[iter][0] / image.shape[1]
+            keypoints[iter][1] = keypoints[iter][1] / image.shape[0]
 
         return resized_image, torch.tensor(keypoints).float()
+
+    def preprocess_image(
+        self, image: np.ndarray
+    ) -> torch.Tensor:
+        resized_image = self.image_preprocessing_pipeline(Image.fromarray(image))
+
+        return resized_image
+
