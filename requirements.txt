@@ -1,5 +1,8 @@
+albumentations
 black
+facenet-pytorch
 flake8
+hydra-core
 isort
 jupyterlab
 loguru
@@ -9,11 +12,9 @@ opencv-python
 pandas
 pre-commit
 pytest
+pytorch_lightning
 seaborn
+timm
 torch
 torchvision
-hydra-core
-pytorch_lightning
-timm
-albumentations
 wandb
