@@ -58,14 +58,16 @@ class KeypointsAlignmentMorphing(alg.Morphing):
         from_height, from_width = from_img.shape[:2]
 
         holography_mat_from_to, _ = cv2.findHomography(
-            np.array(resized_kps), np.array(from_kps)
+            np.array(resized_kps, dtype=np.float32),
+            np.array(from_kps, dtype=np.float32),
         )
         warped_to_image = cv2.warpPerspective(
             resized_to_img, holography_mat_from_to, (from_width, from_height)
         )
 
         holography_mat_to_from, _ = cv2.findHomography(
-            np.array(from_kps), np.array(resized_kps)
+            np.array(from_kps, dtype=np.float32),
+            np.array(resized_kps, dtype=np.float32),
         )
         warped_from_image = cv2.warpPerspective(
             from_img, holography_mat_to_from, (from_width, from_height)
@@ -91,7 +93,8 @@ class KeypointsAlignmentMorphing(alg.Morphing):
         from_height, from_width = from_img.shape[:2]
 
         holography_mat, _ = cv2.findHomography(
-            np.array(resized_kps), np.array(from_kps)
+            np.array(resized_kps, dtype=np.float32),
+            np.array(from_kps, dtype=np.float32),
         )
         warped_to_image = cv2.warpPerspective(
             resized_to_img, holography_mat, (from_width, from_height)
@@ -103,44 +106,3 @@ class KeypointsAlignmentMorphing(alg.Morphing):
             morphs.append(morph)
 
         return morphs
-
-
-################# test program ######################################
-
-if __name__ == "__main__":
-    import os
-
-    a = KeypointsAlignmentMorphing(100)
-
-    F_SAMPLE_ANN = os.path.join("data", "morph_samples", "1.txt")
-    F_SAMPLE_IMG = os.path.join("data", "morph_samples", "1.jpg")
-
-    S_SAMPLE_ANN = os.path.join("data", "morph_samples", "2.txt")
-    S_SAMPLE_IMG = os.path.join("data", "morph_samples", "2.jpg")
-
-    def load_sample(ann_file, img_file):
-        keypoints = []
-
-        with open(ann_file, "r") as ann_file:
-            for i, line in enumerate(ann_file.readlines()):
-                if i == 0:
-                    continue
-
-                coords = [float(val) for val in line.split(",")]
-                keypoints.append(tuple(coords))
-
-        img = cv2.imread(img_file)
-
-        return img, keypoints
-
-    from_img, from_kps = load_sample(F_SAMPLE_ANN, F_SAMPLE_IMG)
-    to_img, to_kps = load_sample(S_SAMPLE_ANN, S_SAMPLE_IMG)
-
-    seq = a.looped_morphing(from_img, to_img, from_kps, to_kps, combined_warped=False)
-
-    while True:
-        for morph in seq:
-            cv2.imshow("homography morphing", morph)
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                exit(0)

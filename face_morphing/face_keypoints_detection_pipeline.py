@@ -9,7 +9,7 @@ import face_morphing.image_processing as ip
 import face_morphing.model as mdl
 
 
-class FaceMorphingPipeline:
+class FaceKeypointsDetectionPipeline:
     def __init__(
         self, model_path: str = C.MODEL_PATH, nn_image_input_resolution: int = 256
     ):
