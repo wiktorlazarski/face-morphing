@@ -1,4 +1,3 @@
-import numpy as np
 import argparse
 
 import cv2
@@ -32,12 +31,16 @@ if __name__ == "__main__":
     from_with_keypoints = from_img.copy()
     for keypoint in from_kps:
         x, y = round(keypoint[0]), round(keypoint[1])
-        from_with_keypoints = cv2.circle(from_with_keypoints, (x, y), radius=5, color=(0,255,0), thickness=-1)
+        from_with_keypoints = cv2.circle(
+            from_with_keypoints, (x, y), radius=5, color=(0, 255, 0), thickness=-1
+        )
 
     to_with_keypoints = to_img.copy()
     for keypoint in to_kps:
         x, y = round(keypoint[0]), round(keypoint[1])
-        to_with_keypoints = cv2.circle(to_with_keypoints, (x, y), radius=5, color=(0,255,0), thickness=-1)
+        to_with_keypoints = cv2.circle(
+            to_with_keypoints, (x, y), radius=5, color=(0, 255, 0), thickness=-1
+        )
 
     morphin_seq = morphing_alg.looped_morphing(
         from_img, to_img, from_kps, to_kps, combined_warped=False
