@@ -32,14 +32,13 @@ def main() -> None:
         fps = round(1 / (next_frame_time - prev_frame_time), 4)
         prev_frame_time = next_frame_time
 
-        img_with_keypoints = frame.copy()
+        frame = frame.copy()
         for keypoint in pred_keypoints:
             x, y = round(keypoint[0]), round(keypoint[1])
-            img_with_keypoints = cv2.circle(img_with_keypoints, (x, y), radius=5, color=(0,255,0), thickness=-1)
+            frame = cv2.circle(frame, (x, y), radius=5, color=(0,255,0), thickness=-1)
 
-        display_frame = np.hstack((frame, img_with_keypoints))
-        display_frame = cv2.putText(
-            img=display_frame,
+        frame = cv2.putText(
+            img=frame,
             text=f"FPS = {str(fps)}",
             org=(15, 55),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
@@ -48,7 +47,7 @@ def main() -> None:
             thickness=5,
         )
 
-        cv2.imshow(OPENCV_WINDOW_NAME, display_frame)
+        cv2.imshow(OPENCV_WINDOW_NAME, frame)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
